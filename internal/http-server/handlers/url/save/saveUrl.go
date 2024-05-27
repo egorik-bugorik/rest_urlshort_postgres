@@ -14,6 +14,9 @@ import (
 	"rest_urlshort_postgres/internal/storage"
 )
 
+
+//go:generate go run github.com/vektra/mockery/v2@v2.43.1 --name=UrlSaver
+
 type UrlSaver interface {
 	SaveUrl(urlTYoSave string, alias string) (int64, error)
 }

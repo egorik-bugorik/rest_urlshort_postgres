@@ -2,6 +2,7 @@ package sql
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"github.com/mattn/go-sqlite3"
 	_ "github.com/mattn/go-sqlite3"
@@ -72,5 +73,33 @@ func (s *Storage) SaveUrl(urlTYoSave string, alias string) (int64, error) {
 
 	}
 	return id, nil
+
+}
+
+func (s *Storage) GetUrl(alias string) (string, error) {
+
+	const op = "storage.sqlite.GetUrl"
+
+	q := `SELECT (url) FROM url where alias = ? `
+
+	stmt, err := s.db.Prepare(q)
+	if err != nil {
+
+		return "", fmt.Errorf("%s :fail to create statement :::%w ", op, err)
+	}
+
+	var res string
+	err = stmt.QueryRow(alias).Scan(&res)
+	if err != nil {
+
+		if errors.Is(err, sql.ErrNoRows) {
+			return "", storage.ErrUrlNotFound
+
+		}
+		return "", fmt.Errorf("%s:::fail to get url from db ::: %w", op, err)
+
+	}
+
+	return res, nil
 
 }

@@ -5,6 +5,7 @@ import (
 	"log/slog"
 	"net/http"
 	"os"
+	"rest_urlshort_postgres/internal/http-server/handlers/redirect"
 	"rest_urlshort_postgres/internal/http-server/handlers/url/save"
 	"rest_urlshort_postgres/internal/http-server/middleware/logger"
 	"rest_urlshort_postgres/internal/lib/logger/handler/slogpretty"
@@ -56,6 +57,7 @@ func main() {
 
 	//:::: CHI ENDPOINTS
 	router.Post("/", save.New(log, storage))
+	router.Get("/{alias}", redirect.Redirect(log, storage))
 
 	//	:::::CREATE SERVER
 
