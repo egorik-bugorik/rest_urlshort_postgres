@@ -47,7 +47,7 @@ CREATE INDEX IF NOT EXISTS idx_alias ON url(alias);`
 	return nil, &Storage{storage}
 }
 
-func (s *Storage) saveUrl(urlTYoSave string, alias string) (int64, error) {
+func (s *Storage) SaveUrl(urlTYoSave string, alias string) (int64, error) {
 	const op = "storage.sql.SaveNew"
 	q := `insert into url(url,alias) values(?,?)`
 
