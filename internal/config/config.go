@@ -18,6 +18,7 @@ type HttpServer struct {
 	Timeout     time.Duration `yaml:"timeout" env-default:"4s"`
 	IdleTimeout time.Duration `yaml:"idle_timeout" env-default:"4s"`
 	User        string        `yaml:"user" env-required:"true"`
+	Password    string        `yaml:"password" env-required:"true" env:"GORIK"`
 }
 
 func MustLoad() *Config {

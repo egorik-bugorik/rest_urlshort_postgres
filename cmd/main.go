@@ -56,7 +56,14 @@ func main() {
 	router.With(logger.New(log))
 
 	//:::: CHI ENDPOINTS
-	router.Post("/", save.New(log, storage))
+
+	router.Route("/url", func(r chi.Router) {
+		r.Use(middleware.BasicAuth("url_short", map[string]string{
+			cfg.HttpServer.User: cfg.HttpServer.Password,
+		}))
+		r.Post("/", save.New(log, storage))
+
+	})
 	router.Get("/{alias}", redirect.Redirect(log, storage))
 
 	//	:::::CREATE SERVER
